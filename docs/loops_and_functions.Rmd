@@ -15,15 +15,13 @@ library(tidyverse)
 
 ## Task 1
 
-Create two sequences, one called `weekdays` that contains days of the week (\"Monday\", \"Tuesday\", \"Wednesday\", etc.) and one called `transects` that contains the series of transect names \"Transect A\", \"Transect B,\"Transect C\".
+Create two sequences, one called `weekdays` that contains days of the week ("Monday", "Tuesday", "Wednesday", etc.) and one called `transects` that contains the series of transect names "Transect A", "Transect B,"Transect C".
 
 ```{r}
 
 weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 transect <- c("Transect A", "Transect B", "Transect C")
-
 empty_matrix <- matrix(nrow = length(weekdays), ncol=length(transect))
-
 
 for (i in seq_along(transect)) {
   for (j in seq_along(weekdays)) {
@@ -37,11 +35,47 @@ empty_matrix
 
 ```
 
+### Exercise Do a calendar
+
+```{r}
+
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+
+days <- c(seq(1,5))
+september_matrix <- matrix(nrow = 5, ncol = length(weekdays))
+
+for (i in seq_along(weekdays)) {
+  for(j in days){
+    input <- paste(weekdays[j], ",", days[j])
+    september_matrix[j,i] <- input
+
+  }
+}
+
+september_matrix
+
+
+```
+
+
+```{r}
+
+weeks = c("week1", "week2", "week3", "week4", "week5")
+days = seq(1,30)
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+
+september <- data_frame(weeks = weeks, sunday = c(NA, 4, 11, 18, 25), monday = c(NA,5,12,19,26))
+
+
+
+```
+
 ## Part 2
 
 ### Task 3
 
-Write a function called `force` that calculates a force (in Newtons), given inputs of mass (in kg) and acceleration (in ms2ms2 (recall: F=maF=ma), and returns a statement \"The resulting force is \_\_\_ Newtons.\"
+Write a function called `force` that calculates a force (in Newtons), given inputs of mass (in kg) and acceleration (in ms2ms2 (recall: F=maF=ma), and returns a statement "The resulting force is \_\_\_ Newtons."
 
 ```{r}
 
@@ -97,14 +131,6 @@ fish_weight("Milfish", 50)
 
 Now, try creating a vector of lengths (e.g. 0 to 100, by increments of 1) and ensuring that your function will calculate the fish weight over a *range* of lengths for the given species (try this for milkfish, storing the output weights as `milkfish_weights`.
 
-```{r}
-
-vec <- c(0:100)
-fish_weight(a=0.0905,b= 2.52,l=vec)
-
-
-```
-
 ### **Task 4**
 
 Wave power (more accurately wave energy flux) in deep water is approximated by:
@@ -120,7 +146,7 @@ Use your `wave_power` function to approximate wave power for a period of 8 secon
 ```{r}
 wave_power <- function(h, t) {
   p_deep = 0.5 * h^2 * t
-  print(paste("The Potentional Ocean Wave Power is", p_deep, "in kWm"))
+  print(paste("The Potentional Ocean Wave Power of wave period (sec)", t, "and height (m)", h, "is", p_deep, "in kWm"))
 }
 
 
@@ -132,6 +158,29 @@ wave_power(t=8, h=h)
 
 The wave energy equation changes based on ocean depth. Along the coast of Brenville, which has a very sharp shelf as the wave approaches the coast, wave energy is approximated using the deep ocean equation (the one you used above) for depths \> 12 meters, and a shallow equation for depths \<= 12 meters. The Brenville team estimates shallow wave power by:
 
-Pshallow=0.81H2TPshallow=0.81H2T
+$Pdeep=0.5H^2T$
+
+$Pshallow=0.81H^2T$
 
 Create a function that requires inputs of water depth, wave height and period, then returns the approximated wave power using the correct equation for the depth entered. It should also include a message (hint: use `message()` just like you would use warning!) that lets the user know if the shallow or deep water equation was used.
+
+```{r}
+
+aprox_wave_power <- function(height, period, depth){
+  if (depth > 12) {
+    message("Given the depth", depth, "we will use the Pdeep equation")
+    wp = 0.5 * height ^2 * period
+    return(wp)
+  }
+  else if (depth < 12 & depth > 0){
+    message("Given the depth", depth, "we will use the Pshallow equation")
+    wp = 0.81 * height ^2 * period
+    return(wp)
+  }
+  else {
+    print("The depth value cannot be negative")
+  }
+}
+
+aprox_wave_power(height = 2.8, period = 8, depth = -5)
+```
